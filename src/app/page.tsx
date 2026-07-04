@@ -157,7 +157,7 @@ export default function Home() {
       <section className="about-section">
         <div className="about-media">
           <Image
-            src="/applications/ficha-anamnese.png"
+            src="/applications/logotipo-laranja.jpg"
             width={900}
             height={600}
             alt="Aplicação da identidade visual Milena Wunsch em ficha de anamnese"
