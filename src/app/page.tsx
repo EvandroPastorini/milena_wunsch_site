@@ -15,6 +15,7 @@ const whatsappHref =
   "https://wa.me/5551995084242?text=Ol%C3%A1%2C%20Milena!%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20um%20atendimento.";
 
 const instagramHref = "https://www.instagram.com/milena.wunsch/";
+const siteUrl = "https://podologamilenawunsch.com.br";
 
 const concerns = [
   "Unhas encravadas ou doloridas",
@@ -50,6 +51,32 @@ const treatments = [
   },
 ];
 
+const businessJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HealthAndBeautyBusiness",
+  name: "Milena Wunsch Podóloga",
+  description:
+    "Podologia clínica e preventiva com atendimento acolhedor, técnico e orientado ao cuidado dos pés.",
+  url: siteUrl,
+  telephone: "+5551995084242",
+  logo: `${siteUrl}/brand/logo-horizontal.svg`,
+  image: `${siteUrl}/brand/logo-horizontal.svg`,
+  sameAs: [instagramHref],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Tratamentos de podologia",
+    itemListElement: treatments.map((treatment) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: treatment.title,
+        description: treatment.text,
+        serviceType: "Podologia",
+      },
+    })),
+  },
+};
+
 const faqs = [
   {
     question: "O atendimento dói?",
@@ -76,6 +103,10 @@ const faqs = [
 export default function Home() {
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+      />
       <header className="site-header">
         <a className="brand-mark" href="#inicio" aria-label="Milena Wunsch Podóloga">
           <Image
