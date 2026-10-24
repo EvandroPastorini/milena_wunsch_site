@@ -90,11 +90,6 @@ const faqs = [
       : "O consultório fica em Canoas/RS. Ao agendar pelo WhatsApp, você recebe o endereço completo e as orientações para chegar.",
   },
   {
-    question: "Atende pessoas de outras cidades?",
-    answer:
-      "Sim. Além de Canoas, o consultório recebe pessoas de Esteio, Sapucaia do Sul, Nova Santa Rita, Cachoeirinha e Porto Alegre, especialmente da Zona Norte.",
-  },
-  {
     question: "Qual a diferença entre podóloga e pedicure?",
     answer:
       "A pedicure cuida da estética das unhas. A podóloga é a profissional da saúde dos pés: avalia e trata unha encravada, calos, fissuras, micose e outras alterações, com técnica, materiais apropriados e orientação preventiva.",
