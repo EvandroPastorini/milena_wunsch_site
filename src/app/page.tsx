@@ -5,17 +5,48 @@ import {
   Check,
   HeartPulse,
   Leaf,
+  MapPin,
   MessageCircle,
+  Navigation,
   ShieldCheck,
   Sparkles,
   Stethoscope,
 } from "lucide-react";
+import { business, siteUrl } from "./business";
 
-const whatsappHref =
-  "https://wa.me/5551995084242?text=Ol%C3%A1%2C%20Milena!%20Vim%20pelo%20site%20e%20gostaria%20de%20agendar%20um%20atendimento.";
+const whatsappHref = business.whatsapp;
+const instagramHref = business.instagram;
+const { address } = business;
 
-const instagramHref = "https://www.instagram.com/milena.wunsch/";
-const siteUrl = "https://podologamilenawunsch.com.br";
+const fullAddress = [
+  address.streetAddress,
+  address.neighborhood,
+  `${address.city}/${address.region}`,
+  address.postalCode,
+]
+  .filter(Boolean)
+  .join(" · ");
+
+const photos = [
+  {
+    src: "/media/photos/preparacao.jpg",
+    alt: "Podóloga Milena Wunsch colocando as luvas ao lado da bancada do consultório em Canoas",
+    title: "Antes de começar",
+    text: "Preparação e atenção aos detalhes.",
+  },
+  {
+    src: "/media/photos/instrumentos.jpg",
+    alt: "Mãos com luvas segurando uma embalagem com instrumentos de podologia",
+    title: "Cada detalhe importa",
+    text: "Cuidado que começa na organização dos materiais.",
+  },
+  {
+    src: "/media/photos/detalhe-atendimento.jpg",
+    alt: "Milena avaliando os dedos do pé de uma pessoa durante o atendimento de podologia",
+    title: "Um olhar individual",
+    text: "Atenção às necessidades de cada pessoa.",
+  },
+];
 
 const concerns = [
   "Unhas encravadas ou doloridas",
@@ -30,63 +61,53 @@ const treatments = [
     text: "Avaliação cuidadosa para manter os pés saudáveis e reduzir recorrências.",
   },
   {
-    title: "Unhas encravadas",
-    text: "Atendimento técnico para aliviar o desconforto com segurança e delicadeza.",
+    title: "Unha encravada",
+    text: "Atendimento técnico para aliviar o desconforto da unha encravada com segurança e delicadeza.",
   },
   {
     title: "Calos e fissuras",
-    text: "Cuidado profissional para recuperar conforto, acabamento e bem-estar.",
+    text: "Remoção de calos e cuidado com rachaduras nos calcanhares para recuperar conforto ao caminhar.",
   },
   {
     title: "Micose nas unhas",
-    text: "Orientação e acompanhamento com protocolos adequados para cada caso.",
+    text: "Orientação e acompanhamento de onicomicose com protocolos adequados para cada caso.",
   },
   {
     title: "Pés sensíveis",
-    text: "Conduta adaptada para idosos, gestantes e pessoas que precisam de atenção extra.",
+    text: "Conduta adaptada para idosos, gestantes, pessoas com diabetes e quem precisa de atenção extra.",
   },
   {
     title: "Educação em cuidado",
-    text: "Indicações práticas para rotina, hidratação, corte de unhas e prevenção.",
+    text: "Indicações práticas para rotina, hidratação, corte correto das unhas e prevenção.",
   },
 ];
 
-const businessJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "HealthAndBeautyBusiness",
-  name: "Milena Wunsch Podóloga",
-  description:
-    "Podologia clínica e preventiva com atendimento acolhedor, técnico e orientado ao cuidado dos pés.",
-  url: siteUrl,
-  telephone: "+5551995084242",
-  logo: `${siteUrl}/brand/logo-horizontal.svg`,
-  image: `${siteUrl}/brand/logo-horizontal.svg`,
-  sameAs: [instagramHref],
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Tratamentos de podologia",
-    itemListElement: treatments.map((treatment) => ({
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: treatment.title,
-        description: treatment.text,
-        serviceType: "Podologia",
-      },
-    })),
-  },
-};
-
 const faqs = [
+  {
+    question: "Onde fica o consultório?",
+    answer: address.streetAddress
+      ? `O consultório fica em ${fullAddress}. Pelo WhatsApp você confirma o horário e recebe as orientações para chegar.`
+      : "O consultório fica em Canoas/RS. Ao agendar pelo WhatsApp, você recebe o endereço completo e as orientações para chegar.",
+  },
+  {
+    question: "Atende pessoas de outras cidades?",
+    answer:
+      "Sim. Além de Canoas, o consultório recebe pessoas de Esteio, Sapucaia do Sul, Nova Santa Rita, Cachoeirinha e Porto Alegre, especialmente da Zona Norte.",
+  },
+  {
+    question: "Qual a diferença entre podóloga e pedicure?",
+    answer:
+      "A pedicure cuida da estética das unhas. A podóloga é a profissional da saúde dos pés: avalia e trata unha encravada, calos, fissuras, micose e outras alterações, com técnica, materiais apropriados e orientação preventiva.",
+  },
   {
     question: "O atendimento dói?",
     answer:
       "A proposta é conduzir cada etapa com técnica, escuta e delicadeza. Em casos com dor prévia, a conduta é ajustada para preservar o máximo de conforto.",
   },
   {
-    question: "Quanto tempo dura uma sessão?",
+    question: "Com que frequência devo ir à podóloga?",
     answer:
-      "O tempo pode variar conforme a necessidade do atendimento. Pelo WhatsApp, a Milena orienta melhor a previsão para o seu caso.",
+      "Depende de cada caso. Para manutenção preventiva, muitas pessoas retornam a cada 30 a 45 dias; em tratamentos como unha encravada ou micose, a Milena indica o intervalo ideal na avaliação.",
   },
   {
     question: "Preciso de encaminhamento médico?",
@@ -100,12 +121,104 @@ const faqs = [
   },
 ];
 
+const postalAddress = {
+  "@type": "PostalAddress",
+  ...(address.streetAddress && { streetAddress: address.streetAddress }),
+  ...(address.postalCode && { postalCode: address.postalCode }),
+  addressLocality: address.city,
+  addressRegion: address.region,
+  addressCountry: address.country,
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: business.name,
+      inLanguage: "pt-BR",
+      publisher: { "@id": `${siteUrl}/#negocio` },
+    },
+    {
+      "@type": ["MedicalBusiness", "HealthAndBeautyBusiness"],
+      "@id": `${siteUrl}/#negocio`,
+      name: business.name,
+      alternateName: "Podóloga Milena Wunsch",
+      description:
+        "Podóloga em Canoas/RS. Podologia clínica e preventiva: unha encravada, calos, fissuras, micose nas unhas e cuidado de pés sensíveis.",
+      url: siteUrl,
+      telephone: business.phone,
+      logo: `${siteUrl}/brand/logo-horizontal.svg`,
+      image: [
+        `${siteUrl}/media/photos/atendimento.jpg`,
+        `${siteUrl}/media/photos/consultorio-canoas.jpg`,
+        `${siteUrl}/media/photos/cuidado-proximo.jpg`,
+      ],
+      medicalSpecialty: "Podiatric",
+      address: postalAddress,
+      areaServed: business.areaServed.map((city) => ({
+        "@type": "City",
+        name: `${city}, RS`,
+      })),
+      ...(business.mapsUrl && { hasMap: business.mapsUrl }),
+      ...(business.openingHours.length > 0 && {
+        openingHours: business.openingHours,
+      }),
+      founder: { "@id": `${siteUrl}/#milena` },
+      sameAs: [instagramHref],
+      knowsLanguage: "pt-BR",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: business.phone,
+        contactType: "Agendamento",
+        availableLanguage: "Portuguese",
+      },
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Tratamentos de podologia em Canoas",
+        itemListElement: treatments.map((treatment) => ({
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: treatment.title,
+            description: treatment.text,
+            serviceType: "Podologia",
+            areaServed: `${address.city}, ${address.region}`,
+          },
+        })),
+      },
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#milena`,
+      name: business.person,
+      jobTitle: "Podóloga",
+      image: `${siteUrl}/media/photos/consultorio-canoas.jpg`,
+      worksFor: { "@id": `${siteUrl}/#negocio` },
+      workLocation: { "@type": "Place", address: postalAddress },
+      sameAs: [instagramHref],
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${siteUrl}/#duvidas`,
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    },
+  ],
+};
+
 export default function Home() {
   return (
-    <main>
+    <main id="conteudo">
+      <a className="skip-link" href="#inicio">Pular para o conteúdo</a>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <header className="site-header">
         <a className="brand-mark" href="#inicio" aria-label="Milena Wunsch Podóloga">
@@ -120,6 +233,7 @@ export default function Home() {
         <nav className="desktop-nav" aria-label="Navegação principal">
           <a href="#cuidados">Cuidados</a>
           <a href="#tratamentos">Tratamentos</a>
+          <a href="#consultorio">Consultório</a>
           <a href="#duvidas">Dúvidas</a>
           <a href="#contato">Contato</a>
         </nav>
@@ -131,37 +245,46 @@ export default function Home() {
 
       <section className="hero-section" id="inicio">
         <div className="hero-copy">
-          <span className="eyebrow">Podologia com escuta e precisão</span>
-          <h1>Saúde e conforto para os seus pés, com cuidado profissional.</h1>
+          <h1>
+            <span className="eyebrow hero-kicker">
+              <MapPin size={15} aria-hidden="true" /> Podóloga em Canoas · RS
+            </span>
+            Seus pés merecem <span>esse cuidado.</span>
+          </h1>
           <p>
-            Atendimento em podologia clínica e preventiva para quem busca alívio,
-            segurança e uma rotina de cuidado mais leve.
+            Podologia clínica e preventiva em Canoas para quem busca alívio,
+            segurança e uma rotina de cuidado mais leve. Atendimento também para
+            quem vem de Esteio, Sapucaia do Sul e Porto Alegre.
           </p>
           <div className="hero-actions">
             <a className="primary-button" href={whatsappHref}>
               <MessageCircle size={20} aria-hidden="true" />
               Agendar pelo WhatsApp
             </a>
-            <a
-              className="secondary-button"
-              href={instagramHref}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <Camera size={19} aria-hidden="true" />
-              Ver Instagram
+            <a className="secondary-button" href="#consultorio">
+              <MapPin size={18} aria-hidden="true" />
+              Conheça o consultório
             </a>
           </div>
+          <div className="hero-signature">
+            <span className="signature-line" aria-hidden="true" />
+            <span>Milena Wunsch <span className="signature-role">· Podóloga</span></span>
+          </div>
         </div>
-        <div className="hero-visual" aria-label="Identidade visual Milena Wunsch">
-          <div className="logo-panel">
+        <div className="hero-visual">
+          <div className="hero-photo">
             <Image
-              src="/brand/logo-horizontal-light.svg"
-              width={390}
-              height={220}
-              alt="Logotipo Milena Wunsch Podóloga"
+              src="/media/photos/atendimento.jpg"
+              width={1200}
+              height={1600}
+              sizes="(max-width: 920px) 100vw, 48vw"
+              alt="Podóloga Milena Wunsch avaliando os pés durante um atendimento em Canoas"
               priority
             />
+            <div className="photo-caption">
+              <span>Podologia clínica e preventiva</span>
+              <strong>Cuidar é olhar de perto.</strong>
+            </div>
           </div>
           <div className="hero-note">
             <ShieldCheck size={24} aria-hidden="true" />
@@ -172,7 +295,7 @@ export default function Home() {
 
       <section className="concerns-section" id="cuidados">
         <div className="section-heading">
-          <span className="eyebrow">Quando procurar</span>
+          <span className="eyebrow">Quando procurar uma podóloga</span>
           <h2>Pequenos desconfortos também merecem atenção.</h2>
         </div>
         <div className="concern-list">
@@ -185,32 +308,40 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="about-section">
+      <section className="about-section" id="milena">
         <div className="about-media">
           <Image
-            src="/applications/logotipo-laranja.jpg"
-            width={900}
-            height={600}
-            alt="Aplicação da identidade visual Milena Wunsch em ficha de anamnese"
+            src="/media/photos/cuidado-proximo.jpg"
+            width={1200}
+            height={1600}
+            sizes="(max-width: 920px) 100vw, 45vw"
+            alt="Milena realizando uma avaliação cuidadosa dos pés, com sua marca no jaleco"
           />
         </div>
         <div className="about-copy">
-          <span className="eyebrow">Milena Wunsch</span>
-          <h2>Uma presença profissional que une clareza, equilíbrio e proximidade.</h2>
+          <span className="eyebrow">Quem é a Milena Wunsch</span>
+          <h2>Por trás de cada cuidado, alguém que escuta você.</h2>
           <p>
-            A marca da Milena foi criada para transmitir confiança e acolhimento.
-            No atendimento, essa mesma intenção aparece em cada detalhe: escuta,
-            higiene, técnica e orientação clara para o cuidado diário.
+            Milena Wunsch é podóloga em Canoas/RS. O cuidado começa por entender o
+            que você sente: sua rotina, suas dúvidas e o conforto dos seus pés
+            recebem atenção individual.
+          </p>
+          <p>
+            Da avaliação às orientações para casa, cada etapa é conduzida com
+            técnica, delicadeza e clareza para você cuidar melhor de si.
           </p>
           <div className="pill-row">
             <span>Atendimento humanizado</span>
             <span>Conduta preventiva</span>
             <span>Orientação individual</span>
           </div>
+          <a className="text-link" href={whatsappHref}>
+            Converse com a Milena <ArrowRight size={18} aria-hidden="true" />
+          </a>
         </div>
       </section>
 
-      <section className="values-section">
+      <section className="values-section" aria-label="Como a Milena trabalha">
         <div className="value-item">
           <Stethoscope size={28} aria-hidden="true" />
           <h3>Técnica</h3>
@@ -230,7 +361,7 @@ export default function Home() {
 
       <section className="treatments-section" id="tratamentos">
         <div className="section-heading wide">
-          <span className="eyebrow">Tratamentos</span>
+          <span className="eyebrow">Tratamentos de podologia em Canoas</span>
           <h2>Cuidado para aliviar, prevenir e devolver bem-estar.</h2>
           <p>
             Cada atendimento considera sua rotina, sensibilidade e necessidade do
@@ -244,6 +375,67 @@ export default function Home() {
               <h3>{treatment.title}</h3>
               <p>{treatment.text}</p>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="location-section" id="consultorio" aria-labelledby="consultorio-title">
+        <div className="location-media">
+          <Image
+            src="/media/photos/consultorio-canoas.jpg"
+            width={1200}
+            height={1600}
+            sizes="(max-width: 920px) 100vw, 45vw"
+            alt="Podóloga Milena Wunsch abrindo uma embalagem de instrumentos no consultório em Canoas, com vista para a cidade"
+          />
+        </div>
+        <div className="location-copy">
+          <span className="eyebrow">Consultório em Canoas</span>
+          <h2 id="consultorio-title">Um espaço claro e tranquilo, perto de você.</h2>
+          <p>
+            O atendimento acontece em consultório próprio em Canoas, preparado
+            para receber você com conforto, higiene e privacidade.
+          </p>
+          <address className="location-address">
+            <MapPin size={20} aria-hidden="true" />
+            <span>
+              <strong>{business.name}</strong>
+              {fullAddress}
+            </span>
+          </address>
+          <div className="location-actions">
+            <a className="primary-button" href={whatsappHref}>
+              <MessageCircle size={20} aria-hidden="true" />
+              Agendar avaliação
+            </a>
+            {business.mapsUrl && (
+              <a
+                className="secondary-button"
+                href={business.mapsUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                <Navigation size={18} aria-hidden="true" />
+                Como chegar
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="gallery-section" aria-labelledby="gallery-title">
+        <div className="section-heading">
+          <span className="eyebrow">O cuidado está nos detalhes</span>
+          <h2 id="gallery-title">Da preparação ao atendimento.</h2>
+        </div>
+        <div className="photo-grid">
+          {photos.map((photo) => (
+            <figure className="photo-card" key={photo.src}>
+              <div className="gallery-photo">
+                <Image src={photo.src} alt={photo.alt} width={1200} height={1600} sizes="(max-width: 640px) 100vw, (max-width: 920px) 50vw, 33vw" />
+              </div>
+              <figcaption><h3>{photo.title}</h3><p>{photo.text}</p></figcaption>
+            </figure>
           ))}
         </div>
       </section>
@@ -272,13 +464,13 @@ export default function Home() {
           <h2>Fale com a Milena e combine seu atendimento.</h2>
           <p>
             Envie uma mensagem pelo WhatsApp para consultar disponibilidade,
-            horários e informações para chegar ao atendimento.
+            horários e informações para chegar ao consultório em Canoas.
           </p>
         </div>
         <div className="contact-actions">
           <a className="primary-button light" href={whatsappHref}>
             <MessageCircle size={20} aria-hidden="true" />
-            +55 51 99508-4242
+            {business.phoneDisplay}
           </a>
           <a
             className="secondary-button light-outline"
@@ -300,7 +492,9 @@ export default function Home() {
           alt=""
           aria-hidden="true"
         />
-        <span>Milena Wunsch Podóloga</span>
+        <span>{business.name}</span>
+        <span>Podologia em {address.city}/{address.region}</span>
+        <a href={`tel:${business.phone}`}>{business.phoneDisplay}</a>
         <span>Todos os direitos reservados.</span>
       </footer>
     </main>

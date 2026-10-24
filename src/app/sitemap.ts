@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const siteUrl = "https://podologamilenawunsch.com.br";
+import { siteUrl } from "./business";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -9,6 +8,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
+      images: [
+        `${siteUrl}/media/photos/atendimento.jpg`,
+        `${siteUrl}/media/photos/consultorio-canoas.jpg`,
+        `${siteUrl}/media/photos/cuidado-proximo.jpg`,
+      ],
     },
   ];
 }

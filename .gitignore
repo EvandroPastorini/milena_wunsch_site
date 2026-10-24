@@ -38,3 +38,9 @@ tmp/
 
 # Source design package kept locally only
 Identidade Visual*/
+
+# Raw media stays local; optimized website assets live in public/media.
+/Midias Milena
+
+# TypeScript incremental build
+*.tsbuildinfo
