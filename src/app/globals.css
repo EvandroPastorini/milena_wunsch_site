@@ -637,7 +637,7 @@ details[open] summary svg {
   color: var(--clear);
   display: grid;
   gap: 28px;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 330px);
 }
 
 .contact-section .eyebrow {
@@ -651,7 +651,7 @@ details[open] summary svg {
 .contact-actions {
   display: grid;
   gap: 12px;
-  min-width: min(100%, 330px);
+  width: 100%;
 }
 
 .primary-button.light {
@@ -715,10 +715,6 @@ details[open] summary svg {
 
   .value-item:first-child {
     border-top: 0;
-  }
-
-  .contact-actions {
-    width: 100%;
   }
 }
 
